@@ -57,39 +57,45 @@ public class CoffeeMakerTest {
 		
 		//Set up for r1
 		recipe1 = new Recipe();
-		recipe1.setName("Coffee");
-		recipe1.setAmtChocolate("0");
-		recipe1.setAmtCoffee("3");
-		recipe1.setAmtMilk("1");
-		recipe1.setAmtSugar("1");
-		recipe1.setPrice("50");
+		makeRecipe(recipe1,"Coffee","0","3","1","1","50");
 		
 		//Set up for r2
 		recipe2 = new Recipe();
-		recipe2.setName("Mocha");
-		recipe2.setAmtChocolate("20");
-		recipe2.setAmtCoffee("3");
-		recipe2.setAmtMilk("1");
-		recipe2.setAmtSugar("1");
-		recipe2.setPrice("75");
+		makeRecipe(recipe2,"Mocha","20","3","1","1","70");
 		
 		//Set up for r3
 		recipe3 = new Recipe();
-		recipe3.setName("Latte");
-		recipe3.setAmtChocolate("0");
-		recipe3.setAmtCoffee("3");
-		recipe3.setAmtMilk("3");
-		recipe3.setAmtSugar("1");
-		recipe3.setPrice("100");
+		makeRecipe(recipe3,"Latte","0","3","3","1","100");
 		
 		//Set up for r4
 		recipe4 = new Recipe();
-		recipe4.setName("Hot Chocolate");
-		recipe4.setAmtChocolate("4");
-		recipe4.setAmtCoffee("0");
-		recipe4.setAmtMilk("1");
-		recipe4.setAmtSugar("1");
-		recipe4.setPrice("65");
+		makeRecipe(recipe4,"Hot Chocolate","4","0","1","1","65");
+
+	}
+
+	/**
+	 * Set the parameters for the recipe. All the parameter except
+	 * 	recipe will be String. 
+	 * @param recipe The recipe
+	 * @param name The name of the recipe
+	 * @param chocolate The amount of chocolate.
+	 * @param coffee The amount of coffee.
+	 * @param milk The amount of milk.
+	 * @param sugar The amount of sugar.
+	 * @param price The price of the recipe.
+	 * 
+	 * @throws RecipeException  if there was an error parsing the ingredient 
+	 * 		amount when setting up the recipe.
+	 */
+	private void makeRecipe(Recipe recipe, String name, String chocolate, 
+							String coffee, String milk, String sugar, 
+							String price) throws RecipeException{
+		recipe.setName(name);
+		recipe.setAmtChocolate(chocolate);
+		recipe.setAmtCoffee(coffee);
+		recipe.setAmtMilk(milk);
+		recipe.setAmtSugar(sugar);
+		recipe.setPrice(price);
 	}
 	
 	
@@ -108,16 +114,112 @@ public class CoffeeMakerTest {
 	
 	/**
 	 * Given a coffee maker with the default inventory
-	 * When we add inventory with malformed quantities (i.e., a negative 
-	 * quantity and a non-numeric string)
+	 * When we add inventory with negative number of coffee
 	 * Then we get an inventory exception
 	 * 
 	 * @throws InventoryException  if there was an error parsing the quanity
 	 * 		to a positive integer.
 	 */
 	@Test(expected = InventoryException.class)
-	public void testAddInventoryException() throws InventoryException {
-		coffeeMaker.addInventory("4", "-1", "asdf", "3");
+	public void testAddInventoryNegativeAmountOfCoffee() throws InventoryException {
+		coffeeMaker.addInventory("-1", "1", "1", "1");
+	}
+
+	/**
+	 * Given a coffee maker with the default inventory
+	 * When we add inventory with negative number of milk
+	 * Then we get an inventory exception
+	 * 
+	 * @throws InventoryException  if there was an error parsing the quanity
+	 * 		to a positive integer.
+	 */
+	@Test(expected = InventoryException.class)
+	public void testAddInventoryNegativeAmountOfMilk() throws InventoryException {
+		coffeeMaker.addInventory("1", "-1", "1", "1");
+	}
+
+	/**
+	 * Given a coffee maker with the default inventory
+	 * When we add inventory with negative number of sugar
+	 * Then we get an inventory exception
+	 * 
+	 * @throws InventoryException  if there was an error parsing the quanity
+	 * 		to a positive integer.
+	 */
+	@Test(expected = InventoryException.class)
+	public void testAddInventoryNegativeAmountOfSugar() throws InventoryException {
+		coffeeMaker.addInventory("1", "1", "-1", "1");
+	}
+
+	/**
+	 * Given a coffee maker with the default inventory
+	 * When we add inventory with negative number of chocolate
+	 * Then we get an inventory exception
+	 * 
+	 * @throws InventoryException  if there was an error parsing the quanity
+	 * 		to a positive integer.
+	 */
+	@Test(expected = InventoryException.class)
+	public void testAddInventoryNegativeAmountOfChocolate() throws InventoryException {
+		// We need to make the amount of sugar to be negative because it
+		// the positive ampunt of sigar will always catch the exception so
+		// we need to make them negative in order to reach the chocolate amount
+		coffeeMaker.addInventory("1", "1", "-1", "-1");
+	}
+
+	/**
+	 * Given a coffee maker with the default inventory
+	 * When we add inventory with non integer quantities of coffee
+	 * Then we get an inventory exception
+	 * 
+	 * @throws InventoryException  if there was an error parsing the quanity
+	 * 		to a positive integer.
+	 */
+	@Test(expected = InventoryException.class)
+	public void testAddInventoryWithNonIntegerOfCoffee() throws InventoryException {
+		coffeeMaker.addInventory("asd", "1", "1","1");
+	}
+
+	/**
+	 * Given a coffee maker with the default inventory
+	 * When we add inventory with non integer quantities of milk
+	 * Then we get an inventory exception
+	 * 
+	 * @throws InventoryException  if there was an error parsing the quanity
+	 * 		to a positive integer.
+	 */
+	@Test(expected = InventoryException.class)
+	public void testAddInventoryWithNonIntegerOfMilk() throws InventoryException {
+		coffeeMaker.addInventory("1", "asd", "1","1");
+	}
+
+	/**
+	 * Given a coffee maker with the default inventory
+	 * When we add inventory with non integer quantities of sugar
+	 * Then we get an inventory exception
+	 * 
+	 * @throws InventoryException  if there was an error parsing the quanity
+	 * 		to a positive integer.
+	 */
+	@Test(expected = InventoryException.class)
+	public void testAddInventoryWithNonIntegerOfSugar() throws InventoryException {
+		coffeeMaker.addInventory("1", "1", "asd","1");
+	}
+
+	/**
+	 * Given a coffee maker with the default inventory
+	 * When we add inventory with non integer quantities of chocolate
+	 * Then we get an inventory exception
+	 * 
+	 * @throws InventoryException  if there was an error parsing the quanity
+	 * 		to a positive integer.
+	 */
+	@Test(expected = InventoryException.class)
+	public void testAddInventoryWithNonIntegerOfChocolate() throws InventoryException {
+		// We need to make the amount of sugar to be negative because it
+		// the positive ampunt of sigar will always catch the exception so
+		// we need to make them negative in order to reach the chocolate amount
+		coffeeMaker.addInventory("1", "1", "-1","asd");
 	}
 
 	/**
@@ -145,6 +247,17 @@ public class CoffeeMakerTest {
 	}
 
 	/**
+	 * Given a coffee maker with none of recipe.
+	 * When we make coffee, selecting the unexisting recipe and pay for 
+	 * 		the coffee costs
+	 * we will get the paying amount back.
+	 */
+	@Test
+	public void testMakeUnexistingCoffee(){
+		assertEquals(25, coffeeMaker.makeCoffee(0, 25));
+	} 
+
+	/**
 	 * Given a coffee maker with one valid recipe
 	 * When we make coffee, selecting the valid recipe and paying less than 
 	 * 		the coffee costs
@@ -167,7 +280,71 @@ public class CoffeeMakerTest {
 		coffeeMaker.addRecipe(recipe3);
 		assertEquals(0, coffeeMaker.makeCoffee(0, 100));
 	}
+
+	/**
+	 * Given a coffee maker with one valid recipe
+	 * When we make coffee and chocolate amount is not enough 
+	 * Then we will get paying amount back.
+	 * @throws RecipeException  if there was an error parsing the ingredient 
+	 * 		amount when setting up the recipe.
+	 */
+	@Test
+	public void testMakeCoffeeWithInsufficientAmountOfChocolate() throws RecipeException{
+		Recipe recipe5 = new Recipe();
+		makeRecipe(recipe5,"Super Chocolate","100","0","0","0","100");
+		coffeeMaker.addRecipe(recipe5);
+		assertEquals(100, coffeeMaker.makeCoffee(0, 100));
+
+	}
+
+	/**
+	 * Given a coffee maker with one valid recipe
+	 * When we make coffee and coffee amount is not enough 
+	 * Then we will get paying amount back.
+	 * @throws RecipeException  if there was an error parsing the ingredient 
+	 * 		amount when setting up the recipe.
+	 */
+	@Test
+	public void testMakeCoffeeWithInsufficientAmountOfCoffee() throws RecipeException{
+		Recipe recipe6 = new Recipe();
+		makeRecipe(recipe6,"Super Coffee","0","100","0","0","100");
+		coffeeMaker.addRecipe(recipe6);
+		assertEquals(100, coffeeMaker.makeCoffee(0, 100));
+
+	}
+
+	/**
+	 * Given a coffee maker with one valid recipe
+	 * When we make coffee and milk amount is not enough 
+	 * Then we will get paying amount back.
+	 * @throws RecipeException  if there was an error parsing the ingredient 
+	 * 		amount when setting up the recipe.
+	 */
+	@Test
+	public void testMakeCoffeeWithInsufficientAmountOfMilk() throws RecipeException{
+		Recipe recipe7 = new Recipe();
+		makeRecipe(recipe7,"Super Milk","0","0","100","0","100");
+		coffeeMaker.addRecipe(recipe7);
+		assertEquals(100, coffeeMaker.makeCoffee(0, 100));
+
+	}
 	
+	/**
+	 * Given a coffee maker with one valid recipe
+	 * When we make coffee and sugar amount is not enough 
+	 * Then we will get paying amount back.
+	 * @throws RecipeException  if there was an error parsing the ingredient 
+	 * 		amount when setting up the recipe.
+	 */
+	@Test
+	public void testMakeCoffeeWithInsufficientAmountOfSugar() throws RecipeException{
+		Recipe recipe8 = new Recipe();
+		makeRecipe(recipe8,"Super Milk","0","0","0","100","100");
+		coffeeMaker.addRecipe(recipe8);
+		assertEquals(100, coffeeMaker.makeCoffee(0, 100));
+
+	}
+
 	/**
 	 * Given a coffee maker with three valid recipes
 	 * When we make add three recipes it should work without any error. 
