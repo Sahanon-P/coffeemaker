@@ -31,6 +31,8 @@ dependencies {
     testImplementation "org.mockito:mockito-core:3.+"
 	// Deprecated.  Use testImplementation.
 //    testCompile 'junit:junit:4.12'
+    testImplementation 'io.cucumber:cucumber-java:6.10.4'
+    testImplementation 'io.cucumber:cucumber-junit:6.10.4'
 }
 
 test {
@@ -43,4 +45,23 @@ jacocoTestReport{
     xml.enabled false
     csv.enabled false
   }
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'edu/ncsu/csc326/coffeemaker', 'src/test/java/edu/ncsu/csc326/resources']
+//          args = ['--snippets', 'camelcase', '--plugin', 'pretty', '--glue', 'demo', 'src/test/resources']
+        }
+    }
 }
