@@ -27,6 +27,8 @@ import org.junit.Test;
 import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 
+import io.cucumber.java.en.*;
+
 /**
  * Unit tests for CoffeeMaker class.
  * 
